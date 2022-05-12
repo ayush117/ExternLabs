@@ -1,27 +1,37 @@
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 8000;
+const cors = require('cors')
+const PORT = 8000;
+const axios = require('axios').default;
 
-const path = require('path');
+app.use(cors());
 
-// Have Node serve the files for our built React app
-app.use(express.static(path.resolve(__dirname, '../client/build')));
+// const path = require('path');
 
-// Handle GET requests to /api route
-app.get("/api", (req, res) => {
-  res.json({ message: "Hello from server!" });
-});
+const call = () => {
+  const url = "https://hub.dummyapis.com/employee?noofRecords=10&idStarts=1001";
 
-// All other GET requests not handled before will return our React app
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
-});
+  return axios.get(url)
+  .then(function (response) {
+    return response;
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+}
 
-app.get('/', (req,res) => {
-    res.json({ message: "Hello from ALL-server!" });
+// app.use(express.static(path.resolve(__dirname, '../client/build')));
+
+// app.get('*', (req, res) => {
+//   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+// });
+
+app.get('/',async (req,res) => {
+  const a = await call();
+  console.log(a.data);
+  res.json({message:a.data});
 });
 
 app.listen(PORT, () => {
-    console.log('server up and running');
+    console.log('server up and running '+ PORT);
 });
-

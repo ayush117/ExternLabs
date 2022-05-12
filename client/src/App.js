@@ -4,9 +4,8 @@ function App() {
   const [data, setData] = React.useState(null);
 
   React.useEffect(() => {
-    fetch("/")
+    fetch("http://localhost:8000/")
       .then((res) => {
-        console.log(res);
         return res.json();
       })
       .then((data) => {
@@ -18,7 +17,13 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>{!data ? "Loading..." : data}</p>
+        <p>{!data ? "Loading..." : data.map(item => {
+          return <>
+            <li>
+              {item.firstName}
+            </li>
+          </>
+        })}</p>
       </header>
     </div>
   );
