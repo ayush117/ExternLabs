@@ -1,32 +1,19 @@
-import React from "react";
-
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Dashboard from "./components/Dashboard";
+import Login from "./components/Login";
+import Navbar from "./components/Navbar";
+import Register from "./components/Register";
+ 
 function App() {
-  const [data, setData] = React.useState(null);
-
-  React.useEffect(() => {
-    fetch("http://localhost:8000/")
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setData(data.message);
-        console.log(data);
-      });
-  }, []);
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>{!data ? "Loading..." : data.map(item => {
-          return <>
-            <li>
-              {item.firstName}
-            </li>
-          </>
-        })}</p>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route exact path="/" element={<Login/>} />
+        <Route path="/register" element={<Register/>} />
+        <Route path="/dashboard" element={<><Navbar/><Dashboard/></>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
-
+ 
 export default App;
